@@ -185,3 +185,31 @@
 # print(slow_fibonacci(100))
 
 
+# Класс SortKey 🌶️
+
+# class SortKey:
+#     def __init__(self, *args, **kwargs):
+#         self.args = args
+#
+#     def __call__(self, obj):
+#         res = []
+#         for k in self.args:
+#             res.append(getattr(obj, k))
+#         return res
+#
+# class User:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#
+#     def __repr__(self):
+#         return f'User({self.name}, {self.age})'
+#
+# users = [User('Gvido', 67), User('Timur', 30), User('Arthur', 20), User('Timur', 45), User('Gvido', 60)]
+#
+# print(max(users, key=SortKey('name')))
+# print(max(users, key=SortKey('age')))
+# print(max(users, key=SortKey('name', 'age')))
+# print(max(users, key=SortKey('age', 'name')))
+
+
