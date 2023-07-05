@@ -223,4 +223,75 @@ def count_instances(cls):
 
 # Декоратор @limiter🌶️🌶️
 
-def limiter():
+
+# def singleton(cls):
+#     old_new = cls.__new__
+#     cls._instance = None
+#
+#     @functools.wraps(old_new)
+#     def new_new(*args, **kwargs):
+#         if cls._instance is None:
+#             cls._instance = object.__new__(cls)
+#         return cls._instance
+#
+#     cls.__new__ = new_new
+#
+#     return cls
+
+import functools
+
+
+def limiter(limit, unique, lookup):
+    def decorator(cls):
+
+        cls.instances = dict()
+        cls.ids = list()
+        old_new = cls.__new__
+
+        def new_new(cls, *args):
+            instance = old_new(cls)
+            id = args[0]
+
+            if id in cls.instances:
+                instance = cls.instances[id]
+            else:
+                cls.ids.append(id)
+                cls.instances[id] = instance
+
+            #cls.instances.append((id, instance))
+
+            #print(args[0])
+
+            if len(cls.instances) == limit:
+                #instance = (cls._real[-1], cls._real[0])[lookup == 'FIRST']
+                instance = cls.instances[cls.ids[0]]
+
+            return instance
+
+        cls.__new__ = new_new
+        return cls
+
+    return decorator
+
+
+@limiter(2, 'ID', 'FIRST')
+class MyClass:
+    def __init__(self, ID, value):
+        self.ID = ID
+        self.value = value
+
+
+print(MyClass.__dict__)
+
+obj1 = MyClass(1, 5)          # создается экземпляр класса с идентификатором 1
+obj2 = MyClass(2, 8)          # создается экземпляр класса с идентификатором 2
+
+obj3 = MyClass(1, 20)         # возвращается obj1, так как экземпляр с идентификатором 1 уже есть
+obj4 = MyClass(3, 0)          # превышено ограничение limit, возвращается первый созданный экземпляр
+
+print(obj3.value)
+print(obj4.value)
+
+print(obj3.__dict__)
+print(obj4.__dict__)
+print(MyClass.__dict__)
