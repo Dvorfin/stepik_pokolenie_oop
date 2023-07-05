@@ -254,6 +254,7 @@ def limiter(limit, unique, lookup):
 
             if id in cls.instances:
                 instance = cls.instances[id]
+
             else:
                 cls.ids.append(id)
                 cls.instances[id] = instance
@@ -262,9 +263,9 @@ def limiter(limit, unique, lookup):
 
             #print(args[0])
 
-            if len(cls.instances) == limit:
+            #if len(cls.instances) == limit:
                 #instance = (cls._real[-1], cls._real[0])[lookup == 'FIRST']
-                instance = cls.instances[cls.ids[0]]
+               # instance = cls.instances[cls.ids[0]]
 
             return instance
 
